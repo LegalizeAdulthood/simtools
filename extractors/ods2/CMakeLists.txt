@@ -1,4 +1,10 @@
-set(ODS2_SOURCES
+add_executable(makehelp makehelp.c compat.c)
+if(WIN32)
+    target_link_libraries(makehelp PRIVATE Shlwapi)
+endif()
+target_folder(makehelp "Extractors")
+
+add_executable(ods2
     ods2.c
     access.c
     cache.c
@@ -29,13 +35,10 @@ set(ODS2_SOURCES
     update.c
     vmstime.c
 )
-
 if(WIN32)
-    list(APPEND ODS2_SOURCES phynt.c)
+    target_sources(ods2 PRIVATE phynt.c)
+    target_link_libraries(ods2 PRIVATE Shlwapi)
 else()
-    list(APPEND ODS2_SOURCES phyunix.c)
+    target_sources(ods2 PRIVATE phyunix.c)
 endif()
-
-add_executable(ods2 ${ODS2_SOURCES})
-target_link_libraries(ods2 PRIVATE Shlwapi)
 target_folder(ods2 "Extractors")
