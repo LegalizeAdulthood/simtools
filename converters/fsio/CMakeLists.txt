@@ -1,3 +1,6 @@
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(readline REQUIRED IMPORTED_TARGET readline)
+
 # Changes
 # CMakeLists.txt
 # declib.c
@@ -34,4 +37,5 @@ add_executable(fsio
     os8.h os8.c
     unixv7.h unixv7.c
 )
+target_link_libraries(fsio PRIVATE PkgConfig::readline)
 target_folder(fsio "Converters")
