@@ -1,0 +1,5 @@
+add_subdirectory(hpasm)
+add_subdirectory(macro1)
+add_subdirectory(macro11)
+add_subdirectory(macro7)
+add_subdirectory(macro8x)

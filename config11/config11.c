@@ -35,7 +35,7 @@
 
 int csr, i, j;
 unsigned int rank, num;
-char *cp, *ocp, inp[100];
+char *cp, *ocp, input[100];
 unsigned char numctl[RANK_LNT];
 unsigned char modtab[RANK_LNT] = {
  0X07, 0X0f, 0X07, 0X07, 0X07, 0X07, 0X07, 0X07,
@@ -66,12 +66,12 @@ for ( ;; ) {
     printf ("Enter configuration data\n");
     for ( ;; ) {
 	printf ("Name:\t");
-	if (fgets (inp, sizeof (inp), stdin) == NULL) return 0;
-	for (cp = inp; *cp != 0; cp++) if (*cp == '\r' || *cp == '\n') *cp = '\0';
-	if (*inp == 0) break;
-	for (cp = inp; *cp != 0; cp++) *cp = toupper (*cp);
+	if (fgets (input, sizeof (input), stdin) == NULL) return 0;
+	for (cp = input; *cp != 0; cp++) if (*cp == '\r' || *cp == '\n') *cp = '\0';
+	if (*input == 0) break;
+	for (cp = input; *cp != 0; cp++) *cp = toupper (*cp);
 	for (rank = 0; rank < RANK_LNT; rank++) {
-	    if (strcmp (inp, namtab[rank]) == 0) break;  }
+	    if (strcmp (input, namtab[rank]) == 0) break;  }
 	if (rank >= RANK_LNT) {
 	    printf ("Unknown controller, valid names are:");
 	    for (i = 0; i < RANK_LNT; i++) {
@@ -80,10 +80,10 @@ for ( ;; ) {
 	    printf ("\n");
 	    continue;  }
 	printf ("Number:\t");
-	fgets (inp, sizeof (inp), stdin);
+	fgets (input, sizeof (input), stdin);
 	errno = 0;
-	num = strtoul (inp, &ocp, 10);
-	if (errno || (inp == ocp)) {
+	num = strtoul (input, &ocp, 10);
+	if (errno || (input == ocp)) {
 	    printf ("Input error\n");
 	    continue;  }
 	if (num > 8) {
