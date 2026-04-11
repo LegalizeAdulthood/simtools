@@ -6,6 +6,10 @@
   "dependencies": [
     "getopt",
     {
+      "name": "libuuid",
+      "platform": "linux"
+    },
+    {
       "name": "ncurses",
       "platform": "linux"
     },

@@ -1,3 +1,8 @@
-add_library(libvhd STATIC libvhd.c relative-path.c)
+add_library(libvhd STATIC
+    "include/blk_uuid.h"
+    "include/vhd.h" 
+    "include/libvhd.h" libvhd.c
+    "include/relative-path.h" relative-path.c
+)
 target_include_directories(libvhd PUBLIC include)
 target_folder(libvhd "Extractors")
