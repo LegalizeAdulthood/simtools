@@ -24,6 +24,9 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
 #include <time.h>
 #include <stdio.h>
 #include <errno.h>
@@ -36,6 +39,16 @@
 #endif
 #include <inttypes.h>
 #include <sys/stat.h>
+
+/* O_DIRECT may not be available on all platforms */
+#ifndef O_DIRECT
+#define O_DIRECT 0
+#endif
+
+/* O_LARGEFILE may not be available on all platforms */
+#ifndef O_LARGEFILE
+#define O_LARGEFILE 0
+#endif
 
 #include "libvhd.h"
 #include "vhd-util.h"

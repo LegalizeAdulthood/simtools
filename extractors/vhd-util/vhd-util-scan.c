@@ -25,6 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
 #include <glob.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -37,6 +40,16 @@
 #include <fnmatch.h>
 #include <libgen.h>	/* for basename() */
 #include <sys/stat.h>
+
+/* O_DIRECT may not be available on all platforms */
+#ifndef O_DIRECT
+#define O_DIRECT 0
+#endif
+
+/* O_LARGEFILE may not be available on all platforms */
+#ifndef O_LARGEFILE
+#define O_LARGEFILE 0
+#endif
 
 #include "list.h"
 #include "libvhd.h"

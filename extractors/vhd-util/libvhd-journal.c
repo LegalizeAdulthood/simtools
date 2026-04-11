@@ -24,6 +24,9 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
 #include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -33,6 +36,16 @@
 #define O_BINARY 0
 #endif
 #include <string.h>
+
+/* O_DIRECT may not be available on all platforms */
+#ifndef O_DIRECT
+#define O_DIRECT 0
+#endif
+
+/* O_LARGEFILE may not be available on all platforms */
+#ifndef O_LARGEFILE
+#define O_LARGEFILE 0
+#endif
 
 #include "atomicio.h"
 #include "libvhd-journal.h"
