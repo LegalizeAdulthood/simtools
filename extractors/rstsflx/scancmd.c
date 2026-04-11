@@ -437,7 +437,7 @@ char *stripwhite (char *string)
 /* some forward declarations */
 char * command_generator (const char *text, int state);
 char * switch_generator (const char *text, int state);
-char ** flx_completion (char *text, int start, int end);
+char ** flx_completion (const char *text, int start, int end);
 
 /* Tell the GNU Readline library how to complete.  We want to try to complete
  * on command names if this is the first word in the line, or on filenames
@@ -481,7 +481,7 @@ void initialize_readline (void)
 	rl_readline_name = "Flx";
      
 	/* Tell the completer that we want a crack first. */
-	rl_attempted_completion_function = (CPPFunction *)flx_completion;
+	rl_attempted_completion_function = flx_completion;
 
 	/* supply some things that don't seem to be there in DOS... */
 	rl_basic_word_break_characters = "n\"\\'`@$>";
@@ -494,12 +494,12 @@ void initialize_readline (void)
  * entire line in case we want to do some simple parsing.  Return the
  * array of matches, or NULL if there aren't any.
  */
-char ** flx_completion (char *text, int start, int end)
+char ** flx_completion (const char *text, int start, int end)
 {
 	char **matches;
-     
+
 	matches = NULL;
-     
+
 	/* If this word is at the start of the line, then it is a command
 	 * to complete.  Otherwise it is the name of a file in the current
 	 * directory.
@@ -508,7 +508,7 @@ char ** flx_completion (char *text, int start, int end)
 		matches = rl_completion_matches (text, command_generator);
 	else if (*text == '-')
 		matches = rl_completion_matches (text, switch_generator);
-	
+
 	return (matches);
 }
      
