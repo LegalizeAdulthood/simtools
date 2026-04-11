@@ -56,23 +56,23 @@ typedef enum
 	range, align, delete
 } retcode;
 
-byte	*sattbf2 = NULL;
-byte	*badbmap = NULL;
-byte	*mfdbuf = NULL;
-byte	*mfdmap = NULL;
-byte	*gfdbuf = NULL;
-byte	*gfdmap = NULL;
-byte	*ufdbuf = NULL;
-byte	*ufdmap = NULL;
+static byte	*sattbf2 = NULL;
+static byte	*badbmap = NULL;
+static byte	*mfdbuf = NULL;
+static byte	*mfdmap = NULL;
+static byte	*gfdbuf = NULL;
+static byte	*gfdmap = NULL;
+static byte	*ufdbuf = NULL;
+static byte	*ufdmap = NULL;
 
-byte	curproj, curprog;
-char	curdir[10];
-char	curfile[22];
-long	filesize;
-long	e;
-long	gfds, ufds, files, clusters;
-long	dirfiles, dirtsize;
-int	badb, satt, init;		/* flags for special files */
+static byte	curproj, curprog;
+static char	curdir[10];
+static char	curfile[22];
+static long	filesize;
+static long	e;
+static long	gfds, ufds, files, clusters;
+static long	dirfiles, dirtsize;
+static int	badb, satt, init;		/* flags for special files */
 
 /* get a yes or no answer; return true if yes, false if no.
  * loop until a valid answer is received.  the default is "no".

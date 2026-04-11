@@ -13,8 +13,8 @@
 
 #define COLUMNS 5
 
-long	files, blocks, tfiles, tblocks;
-byte	curproj, curprog;
+static long	files, blocks, tfiles, tblocks;
+static byte	curproj, curprog;
 
 static void dolistfqb (firqb *f)
 {
