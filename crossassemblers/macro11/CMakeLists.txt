@@ -49,7 +49,6 @@ add_executable(macro11
     "git-info.h.in"
     "${CMAKE_CURRENT_BINARY_DIR}/git-info.h"
 )
-target_compile_definitions(macro11 PRIVATE DEFAULT_OBJECTFORMAT_RT11=0)
 target_include_directories(macro11 PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_folder(macro11 "Cross Assemblers")
 install(TARGETS macro11 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
