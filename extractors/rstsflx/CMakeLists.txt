@@ -1,5 +1,4 @@
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(readline REQUIRED IMPORTED_TARGET readline)
+include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/readline.cmake)
 
 add_executable(rstsflx
     rstsflx.c
@@ -27,20 +26,12 @@ add_executable(rstsflx
     diskio.c
 )
 
-# Platform-specific I/O module and libraries
+# Platform-specific I/O module
 if(WIN32)
-    # Windows configuration
     target_sources(rstsflx PRIVATE winabsio.c)
 else()
-    # Unix configuration
     target_sources(rstsflx PRIVATE unxabsio.c)
-
-    # Link ncurses on Unix (required by readline)
-    find_library(NCURSES_LIBRARY ncurses)
-    if(NCURSES_LIBRARY)
-        target_link_libraries(rstsflx PRIVATE ${NCURSES_LIBRARY})
-    endif()
 endif()
 
-target_link_libraries(rstsflx PRIVATE PkgConfig::readline)
+target_link_libraries(rstsflx PRIVATE readline)
 target_folder(rstsflx "Extractors")
