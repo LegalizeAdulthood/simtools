@@ -11,6 +11,19 @@ jobs:
     strategy:
       matrix:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
+        include:
+          - os: macos-latest
+            cp: cp
+            path: /build-simtools-release/
+            pkg-ext: tar.gz
+          - os: ubuntu-latest
+            cp: cp
+            path: /build-simtools-release/
+            pkg-ext: tar.gz
+          - os: windows-latest
+            cp: copy
+            path: \build-simtools-release\
+            pkg-ext: zip
 
     runs-on: ${{matrix.os}}
 
@@ -38,4 +51,18 @@ jobs:
     - name: Run Workflow
       run: |
         cmake --version
-        cmake --workflow --preset default
+        cmake --workflow --preset release
+
+    # This is needed because our build directory is in ${{runner.workspace}},
+    # not ${{github.workspace}} and the upload-artfact action can only source
+    # files from ${{github.workspace}}.
+    - name: Copy Package to Workspace
+      run: |
+        ${{matrix.cp}} ${{runner.workspace}}${{matrix.path}}*.${{matrix.pkg-ext}} ${{github.workspace}}
+
+    - name: Upload Package Artifact
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      with:
+        archive: false
+        path: ${{github.workspace}}/*.${{matrix.pkg-ext}}
+        compression-level: 0
