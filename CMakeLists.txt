@@ -15,6 +15,8 @@ include(GNUInstallDirs)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(target_folder)
 
+include(CTest)
+
 add_subdirectory(config11)
 add_subdirectory(converters)
 add_subdirectory(crossassemblers)
