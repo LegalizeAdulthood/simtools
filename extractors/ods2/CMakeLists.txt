@@ -1,3 +1,5 @@
+include(uuid)
+
 add_executable(makehelp makehelp.c compat.c)
 if(WIN32)
     target_link_libraries(makehelp PRIVATE Shlwapi)
@@ -71,11 +73,7 @@ else()
     )
     target_include_directories(ods2 PRIVATE vhd)
 
-    # Find and link uuid library for VHD support on Unix
-    find_library(UUID_LIBRARY uuid)
-    if(UUID_LIBRARY)
-        target_link_libraries(ods2 PRIVATE ${UUID_LIBRARY})
-    endif()
+    target_link_libraries(ods2 PRIVATE uuid)
 
     # Optional: libedit support for command line editing
     find_library(EDIT_LIBRARY edit)
