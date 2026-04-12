@@ -8,4 +8,8 @@ add_library(libvhd STATIC
 )
 target_include_directories(libvhd PUBLIC include)
 target_link_libraries(libvhd PUBLIC uuid)
+if(NOT WIN32)
+    find_package(Iconv REQUIRED)
+    target_link_libraries(libvhd PUBLIC Iconv::Iconv)
+endif()
 target_folder(libvhd "Extractors")

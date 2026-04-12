@@ -45,14 +45,11 @@ if(WIN32)
         phynt.c
         phyvhd.c
         winfile.h winfile.c
-        vhd/libvhd.c
-        vhd/relative-path.c
     )
     target_compile_definitions(ods2 PRIVATE
         USE_VHD
         LIBVHD_HAS_SYSLOG=0
     )
-    target_include_directories(ods2 PRIVATE vhd)
     target_link_libraries(ods2 PRIVATE Shlwapi Rpcrt4)
 elseif(VMS)
     # OpenVMS configuration
@@ -62,8 +59,6 @@ else()
     target_sources(ods2 PRIVATE
         phyunix.c
         phyvhd.c
-        vhd/libvhd.c
-        vhd/relative-path.c
     )
     target_compile_definitions(ods2 PRIVATE
         _FILE_OFFSET_BITS=64
@@ -71,8 +66,6 @@ else()
         USE_VHD
         LIBVHD_HAS_SYSLOG=0
     )
-    target_include_directories(ods2 PRIVATE vhd)
-
     target_link_libraries(ods2 PRIVATE uuid)
 
     # Optional: libedit support for command line editing
@@ -83,5 +76,5 @@ else()
         target_link_libraries(ods2 PRIVATE ${EDIT_LIBRARY} ${TERMCAP_LIBRARY})
     endif()
 endif()
-
+target_link_libraries(ods2 PUBLIC libvhd)
 target_folder(ods2 "Extractors")

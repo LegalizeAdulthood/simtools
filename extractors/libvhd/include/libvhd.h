@@ -36,12 +36,19 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include <string.h>
+#include <time.h>
 #if defined(__linux__)
 #include <endian.h>
 #include <byteswap.h>
 #elif defined(__NetBSD__)
 #include <sys/endian.h>
 #include <sys/bswap.h>
+#elif defined(__APPLE__)
+#include <libkern/OSByteOrder.h>
+#include <machine/endian.h>
+#define bswap_16(val) OSSwapInt16(val)
+#define bswap_32(val) OSSwapInt32(val)
+#define bswap_64(val) OSSwapInt64(val)
 #elif defined(_WIN32)
 #undef BYTE_ORDER
 #undef LITTLE_ENDIAN
@@ -70,7 +77,7 @@
 #endif
 
 #if BYTE_ORDER == LITTLE_ENDIAN
-#if defined(__linux__) || defined(_WIN32)
+#if defined(__linux__) || defined(__APPLE__) || defined(_WIN32)
   #define BE16_IN(foo)             (*(foo)) = bswap_16(*(foo))
   #define BE32_IN(foo)             (*(foo)) = bswap_32(*(foo))
   #define BE64_IN(foo)             (*(foo)) = bswap_64(*(foo))
