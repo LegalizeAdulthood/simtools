@@ -1,2 +1,2 @@
-add_executable(backup backup.c backup.h backup.txt)
+add_extractor(backup)
 target_folder(backup "Extractors")

@@ -1,6 +1,6 @@
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/readline.cmake)
 
-add_executable(rstsflx
+add_executable(flx
     rstsflx.c
     fip.c
     rtime.c
@@ -28,10 +28,12 @@ add_executable(rstsflx
 
 # Platform-specific I/O module
 if(WIN32)
-    target_sources(rstsflx PRIVATE winabsio.c)
+    target_sources(flx PRIVATE winabsio.c)
 else()
-    target_sources(rstsflx PRIVATE unxabsio.c)
+    target_sources(flx PRIVATE unxabsio.c)
 endif()
 
-target_link_libraries(rstsflx PRIVATE readline)
-target_folder(rstsflx "Extractors")
+target_link_libraries(flx PRIVATE readline)
+target_folder(flx "Extractors")
+install(TARGETS flx RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/flx.pdf" DESTINATION ${CMAKE_INSTALL_DOCDIR})
