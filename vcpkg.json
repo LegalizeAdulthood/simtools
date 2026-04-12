@@ -11,7 +11,7 @@
     },
     {
       "name": "ncurses",
-      "platform": "linux"
+      "platform": "linux | osx"
     },
     "pkgconf",
     "readline"

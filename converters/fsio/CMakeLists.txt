@@ -1,5 +1,25 @@
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(readline REQUIRED IMPORTED_TARGET readline)
+
+# vcpkg provides ncursesw, but readline's .pc file depends on ncurses
+# Use CMake's FindCurses which handles this properly
+set(CURSES_NEED_NCURSES TRUE)
+find_package(Curses REQUIRED)
+
+# Try pkg-config first (works on Linux with system readline)
+pkg_check_modules(readline QUIET IMPORTED_TARGET readline)
+
+if(NOT TARGET PkgConfig::readline)
+    # Fallback for macOS/vcpkg where readline.pc can't find ncurses
+    find_library(READLINE_LIBRARY NAMES readline REQUIRED)
+    find_path(READLINE_INCLUDE_DIR readline/readline.h REQUIRED)
+
+    add_library(PkgConfig::readline UNKNOWN IMPORTED)
+    set_target_properties(PkgConfig::readline PROPERTIES
+        IMPORTED_LOCATION "${READLINE_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${READLINE_INCLUDE_DIR}"
+        INTERFACE_LINK_LIBRARIES "${CURSES_LIBRARIES}"
+    )
+endif()
 
 # Changes
 # CMakeLists.txt
