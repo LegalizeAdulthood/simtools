@@ -1,6 +1,11 @@
 function(add_converter name)
     add_executable(${name} ${name}.c)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${name}.txt")
+        target_sources(${name} PRIVATE "${name}.txt")
+        install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${name}.txt" DESTINATION ${CMAKE_INSTALL_DOCDIR})
+    endif()
     target_folder(${name} "Converters")
+    install(TARGETS ${name} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endfunction()
 
 add_subdirectory(asc)
