@@ -1,7 +1,4 @@
-if(NOT WIN32)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(uuid REQUIRED IMPORTED_TARGET uuid)
-endif()
+include(uuid)
 
 add_library(vhd-util-lib STATIC 
     include/atomicio.h
@@ -28,10 +25,7 @@ add_library(vhd-util-lib STATIC
     vhd-util-set-field.c
     vhd-util-snapshot.c
 )
-target_link_libraries(vhd-util-lib PUBLIC libvhd)
-if(NOT WIN32)
-    target_link_libraries(vhd-util-lib PUBLIC PkgConfig::uuid)
-endif()
+target_link_libraries(vhd-util-lib PUBLIC libvhd uuid)
 target_include_directories(vhd-util-lib PUBLIC include)
 target_getopt(vhd-util-lib)
 target_folder(vhd-util-lib "Extractors")
