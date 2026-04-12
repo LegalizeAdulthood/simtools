@@ -342,6 +342,7 @@ static int flushAscii(void)
  *
  --*/
 int appendFile(
+  FILE *dest,
   char *name,
   char *ascii,
   uint8 prog,
@@ -422,7 +423,7 @@ int appendFile(
 
     useAscii = strstr(ascii, exten);
 
-    if (WriteTapeRecord(&hdr, hdrSz) == 0) {
+    if (WriteTapeRecord(dest, &hdr, hdrSz) == 0) {
       initTapeBuffering(reclen);
       while ((datalen = fread(record, sizeof(char), reclen, file)) != 0) {
         if (ferror(file))
@@ -433,20 +434,20 @@ int appendFile(
 
           for (j = 0; j < datalen; i++) {
             if (record[j] == '\n')
-              if (writeTapeBuffering('\r') != 0)
+              if (writeTapeBuffering(dest ,'\r') != 0)
                 goto failed;
-            if (writeTapeBuffering(record[j]) != 0)
+            if (writeTapeBuffering(dest, record[j]) != 0)
               goto failed;
           }
         } else {
-          if (WriteTapeRecord(record, datalen) != 0)
+          if (WriteTapeRecord(dest, record, datalen) != 0)
             goto failed;
         }
       }
-      if (flushTapeBuffering() != 0)
+      if (flushTapeBuffering(dest) != 0)
         goto failed;
 
-      if ((WriteTapeMark(0) == 0) && (WriteTapeMark(1) == 0)) {
+      if ((WriteTapeMark(dest, 0) == 0) && (WriteTapeMark(dest, 1) == 0)) {
         fclose(file);
         return 0;
       }
@@ -482,6 +483,7 @@ int appendFile(
  *
  --*/
 void extractFiles(
+  FILE *src,
   char *ascii,
   int ppn
 )
@@ -489,7 +491,7 @@ void extractFiles(
   unsigned int status;
 
   do {
-    switch (status = ReadTapeRecord(record, sizeof(record))) {
+    switch (status = ReadTapeRecord(src, record, sizeof(record))) {
       case ST_EOM:
         break;
 
@@ -534,7 +536,7 @@ void extractFiles(
 
             if ((file = fopen(filename, "w")) != NULL) {
               do {
-                switch (status = ReadTapeRecord(record, sizeof(record))) {
+                switch (status = ReadTapeRecord(src, record, sizeof(record))) {
                   case ST_EOM:
                   case ST_TM:
                     break;
@@ -569,7 +571,7 @@ void extractFiles(
          * Scan forward to the end of this file
          */
         do {
-          status = ReadTapeRecordLength();
+          status = ReadTapeRecordLength(src);
         } while ((status != ST_EOM) && (status != ST_TM));
     }
   } while (status != ST_EOM);
@@ -593,12 +595,12 @@ void extractFiles(
  *      None
  *
  --*/
-void listDirectory(void)
+void listDirectory(FILE *src)
 {
   unsigned int status;
 
   do {
-    switch (status = ReadTapeRecord(record, sizeof(record))) {
+    switch (status = ReadTapeRecord(src, record, sizeof(record))) {
       case ST_EOM:
         break;
 
@@ -633,7 +635,7 @@ void listDirectory(void)
                    filename, sdate, hdr->prot, hdr->prog, hdr->proj);
 
             do {
-              switch (status = ReadTapeRecordLength()) {
+              switch (status = ReadTapeRecordLength(src)) {
                 case ST_EOM:
                 case ST_TM:
                   printf("%u bytes%s\n", length, errorCount ? "(E)" : "");
@@ -654,7 +656,7 @@ void listDirectory(void)
          * Scan forward to the end of this file
          */
         do {
-          status = ReadTapeRecordLength();
+          status = ReadTapeRecordLength(src);
         } while ((status != ST_EOM) && (status != ST_TM));
     }
   } while (status != ST_EOM);

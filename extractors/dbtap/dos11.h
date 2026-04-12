@@ -24,8 +24,12 @@
    in this Software without prior written authorization from John Forecast.
 
 */
+#ifndef DOS11_H
+#define DOS11_H
 
 #include "defs.h"
+
+#include <stdio.h>
 
 /*
  * Actual file header as used in DOS/BATCH-11.
@@ -55,6 +59,8 @@ struct dos11hdr2 {
 /*
  * DOS/BATCH-11 processing functions
  */
-int appendFile(char *, char *, uint8, uint8, int, int);
-void extractFiles(char *, int);
-void listDirectory(void);
+int appendFile(FILE *dest, char *, char *, uint8, uint8, int, int);
+void extractFiles(FILE *src, char *, int);
+void listDirectory(FILE *src);
+
+#endif

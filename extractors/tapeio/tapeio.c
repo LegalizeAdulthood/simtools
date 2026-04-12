@@ -31,6 +31,11 @@
 #include <sys/stat.h>
 #include "tapeio.h"
 
+#if !defined(_MSC_VER)
+// for unlink
+#include <unistd.h>
+#endif
+
 char buffer[MAXRCLNT];
 int rLength, occupied;
 

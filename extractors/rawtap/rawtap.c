@@ -38,6 +38,9 @@ int reclen = DEFRECLEN, seqno = 1;
 int create = 0, append = 0, extract = 0;
 
 char record[MAXRCLNT];
+
+static FILE *src = NULL;
+static FILE *dest = NULL;
 
 /*++
  *      usage
@@ -152,7 +155,7 @@ int main(
     if (argc <= 1)
       usage();
 
-    switch (OpenTapeForWrite(argv[0])) {
+    switch (OpenTapeForWrite(&dest, argv[0])) {
       case TIO_SUCCESS:
     appendFiles:
         argc--, argv++;
@@ -179,13 +182,13 @@ int main(
                 readError++;
                 break;
               }
-              if (WriteTapeRecord(record, datalen) != 0) {
+              if (WriteTapeRecord(dest, record, datalen) != 0) {
                 writeError++;
                 break;
               }
             }
             fclose(file);
-            if ((WriteTapeMark(0) != 0) || (WriteTapeMark(1) != 0))
+            if ((WriteTapeMark(dest, 0) != 0) || (WriteTapeMark(dest, 1) != 0))
               writeError++;
           } else {
             writeError++;
@@ -193,7 +196,7 @@ int main(
           }
           argc--, argv++;
         }
-        CloseTape();
+        CloseTape(dest);
         break;
 
       case TIO_IOERROR:
@@ -211,7 +214,7 @@ int main(
     if (argc <= 1)
       usage();
 
-    switch (OpenTapeForAppend(argv[0])) {
+    switch (OpenTapeForAppend(&dest, argv[0])) {
       case TIO_SUCCESS:
       case TIO_ERROR:
         goto appendFiles;
@@ -234,14 +237,14 @@ int main(
     while (argc >= 1) {
       bot = 1;
 
-      switch (OpenTapeForRead(argv[0])) {
+      switch (OpenTapeForRead(&src, argv[0])) {
         case TIO_SUCCESS:
         case TIO_ERROR:
           /*
            * Extract files from the container file.
            */
           do {
-            switch (status = ReadTapeRecord(record, sizeof(record))) {
+            switch (status = ReadTapeRecord(src, record, sizeof(record))) {
               case ST_EOM:
                 break;
 
@@ -266,7 +269,7 @@ int main(
                       if (fwrite(record, sizeof(char), length, file) != length)
                         writeError++;
 
-                      status = ReadTapeRecord(record, sizeof(record));
+                      status = ReadTapeRecord(src, record, sizeof(record));
                     }
                   } else writeError++;
                 }
@@ -274,7 +277,7 @@ int main(
             }
             bot = 0;
           } while (status != ST_EOM);
-          CloseTape();
+          CloseTape(src);
           break;
 
         case TIO_CORRUPT:

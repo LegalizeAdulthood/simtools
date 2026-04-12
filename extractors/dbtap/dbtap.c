@@ -33,6 +33,8 @@
 char *ascii = "";
 int extra = 0, strict = 0, reclen = 512;
 uint8 prog = 1, proj = 1;
+static FILE *src = NULL;
+static FILE *dest = NULL;
 
 int list = 0, create = 0, append = 0, extract = 0;
 
@@ -189,13 +191,13 @@ int main(
       usage();
 
     while (argc >= 1) {
-      switch (OpenTapeForRead(argv[0])) {
+      switch (OpenTapeForRead(&src, argv[0])) {
         case TIO_SUCCESS:
         case TIO_ERROR:
           printf("%s:\n\n", argv[0]);
-          listDirectory();
+          listDirectory(src);
           printf("\n");
-          CloseTape();
+          CloseTape(src);
           break;
 
         case TIO_CORRUPT:
@@ -215,12 +217,12 @@ int main(
     if (argc <= 1)
       usage();
 
-    switch (OpenTapeForWrite(argv[0])) {
+    switch (OpenTapeForWrite(&dest, argv[0])) {
       case TIO_SUCCESS:
         argc--, argv++;
 
         while (argc >= 1) {
-          switch (appendFile(argv[0], ascii, prog, proj, reclen, strict)) {
+          switch (appendFile(dest, argv[0], ascii, prog, proj, reclen, strict)) {
             case -1:
               fprintf(stderr, "Failed to append %s to tape\n", argv[0]);
               fprintf(stderr, "Container file is probably corrupt\n");
@@ -235,7 +237,7 @@ int main(
           }
           argc--, argv++;
         }
-        CloseTape();
+        CloseTape(dest);
         break;
 
       case TIO_IOERROR:
@@ -253,13 +255,13 @@ int main(
     if (argc <= 1)
       usage();
 
-    switch (OpenTapeForAppend(argv[0])) {
+    switch (OpenTapeForAppend(&dest, argv[0])) {
       case TIO_SUCCESS:
       case TIO_ERROR:
         argc--, argv++;
 
         while (argc >= 1) {
-          switch (appendFile(argv[0], ascii, prog, proj, reclen, strict)) {
+          switch (appendFile(dest, argv[0], ascii, prog, proj, reclen, strict)) {
             case -1:
               fprintf(stderr, "Failed to append %s to tape\n", argv[0]);
               fprintf(stderr, "Container file is probably corrupt\n");
@@ -274,7 +276,7 @@ int main(
           }
           argc--, argv++;
         }
-        CloseTape();
+        CloseTape(dest);
         break;
 
       case TIO_CORRUPT:
@@ -293,13 +295,13 @@ int main(
       usage();
 
     while (argc >= 1) {
-      switch (OpenTapeForRead(argv[0])) {
+      switch (OpenTapeForRead(&src, argv[0])) {
         case TIO_SUCCESS:
         case TIO_ERROR:
           printf("%s:\n\n", argv[0]);
-          extractFiles(ascii, extra);
+          extractFiles(src, ascii, extra);
           printf("\n");
-          CloseTape();
+          CloseTape(src);
           break;
 
         case TIO_CORRUPT:

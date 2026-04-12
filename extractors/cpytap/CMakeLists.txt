@@ -1,3 +1,3 @@
-add_executable(cpytap cpytap.c tapeio.c)
-target_folder(cpytap "Extractors")
+add_extractor(cpytap)
+target_link_libraries(cpytap PUBLIC tapeio)
 target_getopt(cpytap)

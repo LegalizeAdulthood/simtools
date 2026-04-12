@@ -1,2 +1,2 @@
-add_executable(rawtap rawtap.c tapeio.c)
-target_folder(rawtap "Extractors")
+add_extractor(rawtap)
+target_link_libraries(rawtap PUBLIC tapeio)
