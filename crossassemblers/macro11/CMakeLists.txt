@@ -52,6 +52,8 @@ add_executable(macro11
 target_compile_definitions(macro11 PRIVATE DEFAULT_OBJECTFORMAT_RT11=0)
 target_include_directories(macro11 PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_folder(macro11 "Cross Assemblers")
+install(TARGETS macro11 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/README" DESTINATION ${CMAKE_INSTALL_DOCDIR} RENAME "macro11.txt")
 
 add_executable(dumpobj
     "dumpobj.c"
@@ -59,7 +61,9 @@ add_executable(dumpobj
     "util.h"
 )
 target_folder(dumpobj "Cross Assemblers")
-install(TARGETS dumpobj RUNTIME DESTINATION ${CMAKE_INSTALL_BNIDIR})
+install(TARGETS dumpobj RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+add_subdirectory(obj2bin)
 
 if(BUILD_TESTING)
     add_subdirectory(tests)
