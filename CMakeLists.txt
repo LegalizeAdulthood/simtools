@@ -21,3 +21,6 @@ add_subdirectory(config11)
 add_subdirectory(converters)
 add_subdirectory(crossassemblers)
 add_subdirectory(extractors)
+
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/README.md"
+    DESTINATION ${CMAKE_INSTALL_DOCDIR} RENAME "simh-tools.md")
