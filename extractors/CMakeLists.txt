@@ -8,7 +8,7 @@ function(add_extractor name)
         target_sources(${name} PRIVATE "${name}.h")
     endif()
     target_folder(${name} "Extractors")
-    install(TARGETS ${name} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    target_install(${name})
 endfunction()
 
 add_subdirectory(backup)

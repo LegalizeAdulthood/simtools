@@ -35,5 +35,5 @@ endif()
 
 target_link_libraries(flx PRIVATE readline)
 target_folder(flx "Extractors")
-install(TARGETS flx RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+target_install(flx)
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/flx.pdf" DESTINATION ${CMAKE_INSTALL_DOCDIR})

@@ -22,7 +22,7 @@ target_link_libraries(fsio PRIVATE readline regex)
 target_getopt(fsio)
 target_folder(fsio "Converters")
 
-install(TARGETS fsio RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+target_install(fsio)
 install(FILES fsio.txt fsioSimh.txt
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(FILES fsio-dos11.1 fsio-dosmt.1 fsio-os8.1 fsio-rt11.1 fsio-unixv7.1 fsio.1

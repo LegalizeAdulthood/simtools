@@ -5,7 +5,7 @@ function(add_cross_assembler name)
         install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${name}.txt" DESTINATION ${CMAKE_INSTALL_DOCDIR})
     endif()
     target_folder(${name} "Cross Assemblers")
-    install(TARGETS ${name} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    target_install(${name})
 endfunction()
 
 add_subdirectory(hpasm)

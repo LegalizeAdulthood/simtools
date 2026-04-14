@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.21)
 
 set(CACHE PROJECT_NAME TYPE STRING HELP "Project name for IDEs" VALUE "simh-tools")
 project("${PROJECT_NAME}" VERSION 1.0.0 LANGUAGES C)
@@ -14,6 +14,7 @@ include(GNUInstallDirs)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(target_folder)
+include(target_install)
 
 include(CTest)
 
