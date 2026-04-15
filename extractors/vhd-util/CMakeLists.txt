@@ -32,4 +32,9 @@ target_folder(vhd-util-lib "Extractors")
 
 add_executable(vhd-util vhd-util.c)
 target_link_libraries(vhd-util PRIVATE vhd-util-lib)
+target_install(vhd-util)
 target_folder(vhd-util "Extractors")
+
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/README"
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+    RENAME "vhd-util.txt")
