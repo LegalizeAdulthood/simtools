@@ -22,3 +22,6 @@ When decompressing a COSY format file, CSY/ and END/ card images are removed
 from the output. On compression, a CSY/ card image is inserted at the start
 of the output and a END/ card is appended to the output. The resulting
 compressed file will be padded, with NULLs, to be a multiple of 384 bytes.
+
+COSY Version 2 Reference Manual
+<https://bitsavers.org/pdf/cdc/1700/msos/60362100B_COSY_V2_Jul72.pdf>
