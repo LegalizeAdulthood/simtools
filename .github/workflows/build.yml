@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ macos-latest, macos-26-intel, ubuntu-latest, windows-latest ]
+        os: [ macos-latest, macos-26-intel, ubuntu-22.04-arm, ubuntu-latest, windows-11-arm, windows-latest ]
         include:
           - os: macos-26-intel
             cp: cp
@@ -20,10 +20,18 @@ jobs:
             cp: cp
             path: /build-simtools-release/
             pkg-ext: tar.gz
+          - os: ubuntu-22.04-arm
+            cp: cp
+            path: /build-simtools-release/
+            pkg-ext: tar.gz
           - os: ubuntu-latest
             cp: cp
             path: /build-simtools-release/
             pkg-ext: tar.gz
+          - os: windows-11-arm
+            cp: copy
+            path: \build-simtools-release\
+            pkg-ext: zip
           - os: windows-latest
             cp: copy
             path: \build-simtools-release\
