@@ -42,7 +42,7 @@ unsigned int wd[1024];
 (void) argv;
 
 for (i = 0; i < 8; i++) {
-	sprintf (fname, "C:\\temp\\m8376\\m8376e%03d.bin", fnum[i]);
+	sprintf (fname, "m8376e%03d.bin", fnum[i]);
 	fi[i] = fopen (fname, "rb");
 	if (fi[i] == NULL) {
 	    printf ("Can't open file %s\n", fname);
@@ -63,7 +63,7 @@ for (i = 0; i < 1024; i++) {
 	}
 
 for (i = 0; i < 8; i++) fclose (fi[i]);
-outf = fopen ("c:\\prom.bin", "wb");
+outf = fopen ("prom.bin", "wb");
 if (outf == NULL) {
 	printf ("Can't open output file\n");
 	return 0;
