@@ -550,9 +550,7 @@ char* arg;
 }
 
 
-int main(argc, argv)
-long argc;
-char* argv[];
+int main(int argc, char *argv[])
 {
   long i;
   char* s, tapetype[4];
