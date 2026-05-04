@@ -41,7 +41,7 @@ char *s, *ppos, *cptr, line[256], oname[256];
 FILE *ifile, *ofile;
 
 if ((argc < 2) || (argv[0] == NULL)) {
-	printf ("Usage is: verb file [file...]\n");
+	printf ("Usage is: sfmtcvt [-124] file [file...]\n");
 	exit (0);  }
 
 s = argv[1];
