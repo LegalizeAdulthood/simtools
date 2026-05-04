@@ -1,0 +1,2 @@
+#cmakedefine GIT_VERSION      "@GIT_VERSION@"
+#cmakedefine GIT_AUTHOR_DATE  "@GIT_AUTHOR_DATE@"
