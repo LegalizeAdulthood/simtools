@@ -5,7 +5,11 @@
   "description": "OpenSIMH tools",
   "dependencies": [
     "getopt",
-    "readline",
-    "pkgconf"
+    {
+      "name": "ncurses",
+      "platform": "linux"
+    },
+    "pkgconf",
+    "readline"
   ]
 }
