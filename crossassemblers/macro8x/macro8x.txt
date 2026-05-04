@@ -1,0 +1,86 @@
+MACRO8X(1)                      PDP/8 Assembler                     MACRO8X(1)
+
+NAME
+       macro8x - a PDP/8 macro8x-like assembler
+
+
+SYNOPSIS
+       macro8x [ -d -m -p -r -x ] inputfile inputfile...
+
+
+DESCRIPTION
+       This is a cross-assembler for PDP/8 assembly language programs. It pro-
+       duces  output  files  in  bin format, rim format, and using appropriate
+       pseudo-ops, a combination of rim and bin formats. A listing file is al-
+       ways produced with an optional symbol table and/or a symbol  cross-ref-
+       erence  (concordance).  The  permanent  symbol table can be output in a
+       form that may be read back in to create a customized  permanent  symbol
+       table.  Errors  are  output  to a separate file with the filename, line
+       number, column number, and error message, as well as marking the  error
+       in the listing file.
+
+
+OPTIONS
+       -d     Dump the symbol table at the end of assembly.
+
+       -m     Print macro expansions.
+
+       -p     Generate a file with the permanent symbols in it.
+
+       -r     Produce output in rim format (default is bin format).
+
+       -x     Generate a cross-reference (concordance) of user symbols.
+
+
+DIAGNOSTICS
+       Assembler error diagnostics are output to an error file and inserted in
+       the listing file. Each line in the error file has the form:
+       <filename>(<line>:<col>) : error: <message> at Loc = <loc>
+       An example error message is:
+       bintst.pal(17:9) : error: undefined symbol "UNDEF" at Loc = 07616
+
+
+BUGS
+       Only  a minimal effort has been made to keep the listing format similar
+       to the PAL-8 listing format. The operation of the conditional  assembly
+       pseudo-ops  may  not function exactly as the DEC versions. The RIMPUNch
+       and BINPUNch pseudo-ops do not change the binary output file type spec-
+       ified on startup. Floating point input does not generate values exactly
+       as the DEC compiler does.
+
+
+BUILD AND INSTALLATION
+       This program has been built and successfully executed on:
+
+       Linux (80486 CPU) using gcc
+
+       RS/6000 (AIX 3.2.5)
+
+       Borland C++ version 3.1 (large memory model)
+
+       Borland C++ version 4.52 (large memory model)
+
+
+HISTORICAL NOTE
+       This assembler was written to support the fleet of PDP-8  systems  used
+       by  the  Bay Area Rapid Transit System. As of early 1997, this includes
+       about 40 PDP-8/E systems driving the train destination signs in passen-
+       ger stations.
+
+
+REFERENCES
+       This assembler is based on the pal assembler by:
+
+       Douglas Jones <jones@cs.uiowa.edu>
+
+       Rich Coon <coon@convexw.convex.com>
+
+
+COPYRIGHT
+       This is free software. There is no fee for using it. You may  make  any
+       changes  that you wish and also give it away. If you can make a commer-
+       cial product out of it, fine, but do not put any  limits  on  the  pur-
+       chaser's  right  to do the same.  If you improve it or fix any bugs, it
+       would be nice if you told me and offered me a copy of the new version.
+
+v1.0                                12Apr96                         MACRO8X(1)
