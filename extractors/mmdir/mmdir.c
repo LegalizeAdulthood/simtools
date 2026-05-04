@@ -41,7 +41,7 @@ FILE *ifile;
 #define MAXRLNT 65536
 
 if ((argc < 2) || (argv[0] == NULL)) {
-	printf ("Usage is: verb file [file...]\n");
+	printf ("Usage is: mmdir file [file...]\n");
 	exit (0);  }
 
 for (i = 1; i < argc; i++) {
