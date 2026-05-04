@@ -58,7 +58,16 @@ void            my_searchenv(
 
 #define strdup _strdup
 #define putenv _putenv
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
+#define strtok_r strtok_s
 #define PATHSEP ";"
+
+char           *stpncpy(
+    char *dest,
+    const char *src,
+    size_t n);
+
 #else
 
 #define PATHSEP ":"

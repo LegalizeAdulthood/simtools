@@ -50,6 +50,38 @@ DAMAGE.
 #include <sys/types.h>
 #include <sys/stat.h>
 #define stat _stat
+
+/// @brief Copy a string to a sized buffer, returning pointer to the end.
+///
+/// This is a Windows implementation of the POSIX stpncpy function.
+/// Copies at most n characters from src to dest. If src is shorter than n,
+/// the remainder of dest is filled with null bytes. Returns a pointer to
+/// the terminating null byte in dest, or to dest+n if no null byte was
+/// written.
+///
+/// @param dest Destination buffer.
+/// @param src Source string.
+/// @param n Maximum number of characters to copy.
+///
+/// @return Pointer to the end of the copied string in dest.
+///
+char *stpncpy(
+    char *dest,
+    const char *src,
+    size_t n)
+{
+    size_t i;
+
+    for (i = 0; i < n && src[i] != '\0'; i++) {
+        dest[i] = src[i];
+    }
+    char *end = dest + i;
+    for (; i < n; i++) {
+        dest[i] = '\0';
+    }
+    return end;
+}
+
 #else
 #include <sys/stat.h>
 #include <unistd.h>
