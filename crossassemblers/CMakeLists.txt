@@ -1,3 +1,8 @@
+function(add_cross_assembler name)
+    add_executable(${name} ${name}.c)
+    target_folder(${name} "Cross Assemblers")
+endfunction()
+
 add_subdirectory(hpasm)
 add_subdirectory(macro1)
 add_subdirectory(macro11)
