@@ -57,7 +57,7 @@ char *ppos, oname[256];
 FILE *ifile, *ofile;
 
 if ((argc < 2) || (argv[0] == NULL)) {
-	printf ("Usage is: verb file [file...]\n");
+	printf ("Usage is: gt7cvt file [file...]\n");
 	exit (0);  }
 
 for (i = 1; i < argc; i++) {
