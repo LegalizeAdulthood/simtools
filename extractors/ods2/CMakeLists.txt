@@ -35,10 +35,55 @@ add_executable(ods2
     update.c
     vmstime.c
 )
+
+# Platform-specific configuration
 if(WIN32)
-    target_sources(ods2 PRIVATE phynt.c)
-    target_link_libraries(ods2 PRIVATE Shlwapi)
+    # Windows NT configuration
+    target_sources(ods2 PRIVATE
+        phynt.c
+        phyvhd.c
+        winfile.h winfile.c
+        vhd/libvhd.c
+        vhd/relative-path.c
+    )
+    target_compile_definitions(ods2 PRIVATE
+        USE_VHD
+        LIBVHD_HAS_SYSLOG=0
+    )
+    target_include_directories(ods2 PRIVATE vhd)
+    target_link_libraries(ods2 PRIVATE Shlwapi Rpcrt4)
+elseif(VMS)
+    # OpenVMS configuration
+    target_sources(ods2 PRIVATE phyvms.c)
 else()
-    target_sources(ods2 PRIVATE phyunix.c)
+    # Unix configuration (Linux, macOS, Solaris, Tru64, etc.)
+    target_sources(ods2 PRIVATE
+        phyunix.c
+        phyvhd.c
+        vhd/libvhd.c
+        vhd/relative-path.c
+    )
+    target_compile_definitions(ods2 PRIVATE
+        _FILE_OFFSET_BITS=64
+        _GNU_SOURCE
+        USE_VHD
+        LIBVHD_HAS_SYSLOG=0
+    )
+    target_include_directories(ods2 PRIVATE vhd)
+
+    # Find and link uuid library for VHD support on Unix
+    find_library(UUID_LIBRARY uuid)
+    if(UUID_LIBRARY)
+        target_link_libraries(ods2 PRIVATE ${UUID_LIBRARY})
+    endif()
+
+    # Optional: libedit support for command line editing
+    find_library(EDIT_LIBRARY edit)
+    find_library(TERMCAP_LIBRARY termcap)
+    if(EDIT_LIBRARY AND TERMCAP_LIBRARY)
+        target_compile_definitions(ods2 PRIVATE USE_LIBEDIT)
+        target_link_libraries(ods2 PRIVATE ${EDIT_LIBRARY} ${TERMCAP_LIBRARY})
+    endif()
 endif()
+
 target_folder(ods2 "Extractors")
