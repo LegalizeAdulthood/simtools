@@ -21,6 +21,10 @@
 #define S_ISCHR(x)      (((x) & S_IFMT) == S_IFCHR)
 #endif
 
+#ifndef S_ISBLK
+#define S_ISBLK(x)      0
+#endif
+
 typedef struct {
 	const char	*name;	/* Name of the disk */
 	long		tsize;	/* Total container size */

@@ -4,6 +4,8 @@
   "version-semver": "1.0.0",
   "description": "OpenSIMH tools",
   "dependencies": [
-    "getopt"
+    "getopt",
+    "readline",
+    "pkgconf"
   ]
 }

@@ -27,7 +27,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <getopt.h>
 #include "dos11.h"
 #include "tapeio.h"
 char *ascii = "";

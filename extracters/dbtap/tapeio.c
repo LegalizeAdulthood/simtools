@@ -28,7 +28,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/stat.h>
 #include "tapeio.h"
 
@@ -110,8 +109,11 @@ int OpenTapeForWrite(
   /*
    * Fail if the file exists
    */
-  if (access(name, F_OK) == 0)
+  if ((tfile = fopen(name, "r")) != NULL) {
+    fclose(tfile);
+    tfile = NULL;
     return TIO_CREATEFAIL;
+  }
 
   if ((tfile = fopen(name, "w+")) != NULL) {
     uint32 tm = 0;
@@ -242,7 +244,7 @@ static int verifyFormat(void)
   fstat(fileno(tfile), &stat);
 
   for (;;) {
-    position = ftello(tfile);
+    position = ftell(tfile);
 
     /*
      * If we are position at the end of file, there is a tape mark missing.
