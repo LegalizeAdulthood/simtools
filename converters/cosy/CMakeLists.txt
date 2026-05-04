@@ -1,5 +1,4 @@
-if(WIN32)
-    return()
-endif()
+include(target_getopt)
 
 add_converter(cosy)
+target_getopt(cosy)

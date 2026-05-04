@@ -565,15 +565,6 @@ static void usage(const char* prog)
 }
 
 
-#if    defined(__CYGWIN__)
-#  define _stricmp  strcasecmp
-#elif !defined(_MSC_VER)
-#  define _stricmp  strcmp
-#else
-#  define  strcmp  _strcmp
-#endif
-
-
 int main(int argc, char* argv[])
 {
     const char* infile;

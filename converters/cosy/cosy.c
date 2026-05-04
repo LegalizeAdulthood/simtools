@@ -49,9 +49,9 @@
  *     to a multiple of 192 words (384 bytes).
  */
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 
 #define PREFIX          0x5F

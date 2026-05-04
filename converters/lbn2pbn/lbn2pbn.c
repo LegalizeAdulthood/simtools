@@ -138,17 +138,6 @@ static void usage(const char* prog)
 }
 
 
-#ifndef __CYGWIN__
-extern int opterr, optind;
-extern char* optarg;
-#  ifndef _MSC_VER
-#    define _stricmp  strcmp
-#  endif
-#else
-#  define   _stricmp  strcasecmp
-#endif
-
-
 int main(int argc, char* argv[])
 {
     int reverse = 0;
