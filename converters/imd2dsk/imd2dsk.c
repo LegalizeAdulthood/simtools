@@ -48,6 +48,12 @@
 #include <time.h>
 
 #if defined(_MSC_VER)
+#  define strcasecmp _stricmp
+#else
+#  include <strings.h>
+#endif
+
+#if defined(_MSC_VER)
 #  define PACKED(...)                           \
     __pragma(pack(push, 1))                     \
     __VA_ARGS__                                 \
@@ -604,7 +610,7 @@ int main(int argc, char* argv[])
         ++p;
     if (argc < 3
         ||  !(infile = argv[p++])  ||  !(outfile = argv[p++])  ||  argv[p]
-        ||  _stricmp(infile, outfile) == 0) {
+        ||  strcasecmp(infile, outfile) == 0) {
         usage(argv[0]);
     }
 
