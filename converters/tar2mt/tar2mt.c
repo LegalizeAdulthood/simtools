@@ -29,7 +29,7 @@
 #include <string.h>
 #include <errno.h>
 
-main (int argc, char **argv)
+int main (int argc, char **argv)
 {
 FILE *fIn = NULL, *fOut = NULL;
 size_t blocksize = 8192, bytes_read;
