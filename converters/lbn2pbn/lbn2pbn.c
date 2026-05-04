@@ -44,6 +44,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(_MSC_VER)
+#  define strcasecmp _stricmp
+#else
+#  include <strings.h>
+#endif
+
 #define SECTOR_MIN_SIZE 128
 #define SECTOR_MAX_SIZE 512
 
@@ -195,7 +201,7 @@ int main(int argc, char* argv[])
     if (tracks <= 0  ||  sectors <= 0  ||  interleave <= 0  ||  track_skew < 0
         ||  interleave >= sectors  ||  sector_size <= 0  ||  p != optind
         ||  !(infile = argv[p++])  ||  !(outfile = argv[p++])  ||  argv[p]
-        ||  _stricmp(infile, outfile) == 0) {
+        ||  strcasecmp(infile, outfile) == 0) {
         usage(argv[0]);
     }
 
