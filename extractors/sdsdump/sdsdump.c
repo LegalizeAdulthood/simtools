@@ -55,7 +55,7 @@ char *opstr[] = {
 	"SKM", "LDX", "SKA", "SKG", "SKD", "LDB", "LDA", "EAX" };
 
 if ((argc < 2) || (argv[0] == NULL)) {
-	printf ("Usage is: verb file [file...]\n");
+	printf ("Usage is: sdsdump file [file...]\n");
 	exit (0);  }
 
 for (i = 1; i < argc; i++) {
