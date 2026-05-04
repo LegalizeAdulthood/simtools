@@ -1,21 +1,21 @@
 /******************************************************************************/
 /*                                                                            */
-/* Program:  MACRO7                                                          */
-/* File:     macro7.c                                                        */
+/* Program:  MACRO7                                                           */
+/* File:     macro7.c                                                         */
 /* Author:   Gary A. Messenbrink <gary@netcom.com>                            */
-/* MACRO7 modifications: Bob Supnik <bob.supnik@ljo.dec.com                  */
+/* MACRO7 modifications: Bob Supnik <bob.supnik@ljo.dec.com                   */
 /*                                                                            */
-/* Purpose:  A 2 pass PDP-7 assembler.                                 */
+/* Purpose:  A 2 pass PDP-7 assembler.                                        */
 /*                                                                            */
 /* NAME                                                                       */
-/*    macro8x - a PDP-7 assembler.                               */
+/*    macro7 - a PDP-7 assembler.                                             */
 /*                                                                            */
 /* SYNOPSIS:                                                                  */
 /*    macro7 [ -d -p -m -r -x ] inputfile inputfile...                        */
 /*                                                                            */
 /* DESCRIPTION                                                                */
 /*    This is a cross-assembler to for PDP-7 assembly language programs.      */
-/*    It will produce an output file in rim format only. */
+/*    It will produce an output file in rim format only.                      */
 /*    A listing file is always produced and with an optional symbol table     */
 /*    and/or a symbol cross-reference (concordance).  The permanent symbol    */
 /*    table can be output in a form that may be read back in so a customized  */
