@@ -1,0 +1,131 @@
+MACRO1(1)                   PDP-1 Assembler Manual                   MACRO1(1)
+
+NAME
+       macro1 - a PDP-1 assembler
+
+
+SYNOPSIS
+       macro1 [ -d -p -m -r -s -x ] inputfile inputfile...
+
+
+DESCRIPTION
+       This is a cross-assembler for PDP-1 assembly language programs. It pro-
+       duces  an output file in RIM format only. A listing file is always pro-
+       duced, with optional symbol table and/or symbol  cross-reference  (con-
+       cordance).  The permanent symbol table can be output in a form that may
+       be read back in, allowing for a customized permanent symbol table.  Any
+       detected  errors are output to a separate file, including the filename,
+       line number, column number, and error message, as well as  marking  the
+       error in the listing file.
+
+       The following file name extensions are used:
+
+       .mac   source code (input)
+
+       .lst   assembly listing (output)
+
+       .rim   assembly output in DEC's RIM format (output)
+
+       .prm   permanent  symbol table in a form suitable for reading after the
+              EXPUNGE pseudo-op
+
+       .sym   "symbol punch" tape (for DDT, or reloading into macro)
+
+
+OPTIONS
+       -d     Dump the symbol table at the end of assembly.
+
+       -p     Generate a file with the permanent symbols in it.  (To  get  the
+              current  symbol  table,  assemble  a file that has only START in
+              it.)
+
+       -x     Generate a cross-reference (concordance) of user symbols.
+
+       -r     Output a tape using only RIM format (else output block loader).
+
+       -s     Output a symbol dump tape (loader + loader blocks).
+
+       -S file
+              Read a symbol tape back in.
+
+
+DIAGNOSTICS
+       Assembler error diagnostics are output to an error file and inserted in
+       the listing file. Each line in the error file has the form:
+       <filename>:<line>:<col> : error: <message> at Loc = <loc>
+
+       An example error message is:
+       bintst.7:17:9 : error: undefined symbol "UNDEF" at Loc = 07616
+
+       The error diagnostics in the listing start with a  two-character  error
+       code  (if appropriate) and a short message. A caret '^' is placed under
+       the item in error if appropriate. An example error message is:
+       17 07616 3000    DAC    UNDEF
+       UD undefined            ^
+       18 07617 1777    TAD    I DUMMY
+
+       Undefined symbols are marked in the symbol table listing by  prepending
+       a by prepending a '#' to the symbol. Examples are:
+       #REDEF   04567
+        SWITCH   07612
+       ?UNDEF   00000
+
+       Refer to the code for the diagnostic messages generated.
+
+
+REFERENCES
+       This  assembler  is  based  on  the  PAL  assembler  by:  Douglas Jones
+       <jones@cs.uiowa.edu> and Rich Coon <coon@convexw.convex.com>
+
+
+COPYRIGHT
+       This is free software. There is no fee for using it. You may  make  any
+       changes  that you wish and also give it away. If you can make a commer-
+       cial product out of it, fine, but do not put any  limits  on  the  pur-
+       chaser's  right  to  do the same. If you improve it or fix any bugs, it
+       would be nice if you told me and offered me a copy of the new version.
+
+
+AMENDMENTS
+       Version 1.0 (12Apr96)
+              Original.
+
+       Version 1.1 (18Nov96)
+              Permanent symbol table initialization error.
+
+       Version 1.2 (20Nov96)
+              Added BINPUNch and RIMPUNch pseudo-operators.
+
+       Version 1.3 (24Nov96)
+              Added DUBL pseudo-op (24-bit integer constants).
+
+       Version 1.4 (29Nov96)
+              Fixed bug in checksum generation.
+
+       Version 2.1 (08Dec96)
+              Added concordance processing (cross-reference).
+
+       Version 2.2 (10Dec96)
+              Added FLTG pseudo-op (floating point constants).
+
+       Version 2.3 (02Feb97)
+              Fixed paging problem in cross-reference output.
+
+       Version 3.0 (14Feb97)
+              MACRO8X features.
+
+       08Mar97
+              MACRO7 released with sim8swre.
+
+       13Mar97
+              MACRO1 released with lispswre.
+
+       28Nov01
+              MACRO1 released with simtools.
+
+       05Mar03
+              MACRO1 released with ddt1.
+
+       2003   Major reworking, assembles MACRO, DDT.
+
+Version 3.0                    October 23, 2003                      MACRO1(1)
