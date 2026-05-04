@@ -32,14 +32,25 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 #include <sys/stat.h>
+
+#ifdef _WIN32
+#include <pcre2posix.h>
+#else
 #include <regex.h>
+#endif
 
 #include "fsio.h"
+
+#ifdef _WIN32
+#define le16toh(x) (x)
+#define htole16(x) (x)
+
+#define localtime_r(now_, tm_) localtime_s(tm_, now_)
+#endif
 
 static struct DiskSize {
   char          *name;                  /* Disk name */

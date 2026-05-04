@@ -31,15 +31,45 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 #include <sys/stat.h>
+
+#ifdef __APPLE__
 #include <fnmatch.h>
-#include <regex.h>
+#include <unistd.h>
+
+#include <libkern/OSByteOrder.h>
+#endif
+#ifdef __linux__
+#include <endian.h>
+#include <fnmatch.h>
+#endif
 
 #include "fsio.h"
+
+#ifdef _WIN32
+#define FNM_PERIOD 1
+
+int fnmatch(const char *pattern, const char *string, int flags) {
+    // Simple implementation of fnmatch for Windows
+    return strcmp(pattern, string);
+}
+
+// Windows is little endian
+#define le16toh(x) (x)
+#define htole16(x) (x)
+#define le32toh(x) (x)
+#define htole32(x) (x)
+#endif
+
+#ifdef __APPLE__
+#define htole16(x) OSSwapHostToLittleInt16(x)
+#define htole32(x) OSSwapHostToLittleInt32(x)
+#define le16toh(x) OSSwapLittleToHostInt16(x)
+#define le32toh(x) OSSwapLittleToHostInt32(x)
+#endif
 
 /*
  * Table of "set" commands

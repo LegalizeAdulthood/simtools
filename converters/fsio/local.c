@@ -31,12 +31,23 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#include <io.h>
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "fsio.h"
+
+#ifdef _WIN32
+#define unlink _unlink
+#endif
 
 /*++
  *      l o c a l I n f o

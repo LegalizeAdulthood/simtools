@@ -32,13 +32,25 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 #include <sys/stat.h>
 
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
 #include "fsio.h"
+
+#ifdef _WIN32
+#define le32toh(x) (x)
+#define htole16(x) (x)
+#define htole32(x) (x)
+
+#define fseeko(stream, offset, whence) _fseeki64(stream, offset, whence)
+#define ftello(stream) _ftelli64(stream)
+#endif
 
 /*++
  *      t a p e V e r i f y

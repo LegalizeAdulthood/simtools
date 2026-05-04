@@ -269,12 +269,24 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <ctype.h>
+#include <getopt.h>
 #include <string.h>
 
+#ifdef _WIN32
+#include <corecrt_io.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "fsio.h"
+
+#ifdef _WIN32
+#define F_OK 0
+#define fseeko(stream, offset, whence) _fseeki64(stream, offset, whence)
+#define ftello(stream) _ftelli64(stream)
+#endif
 
 /*
  * By default, fsio will use the GNU readline library. If you do not have
@@ -558,7 +570,7 @@ int main(
   argc -= optind;
   argv += optind;
 
-#if !defined(__linux__)
+#if !defined(__linux__) && !defined(_WIN32)
   optreset = 1;
 #endif
   optind = 1;
@@ -1896,7 +1908,7 @@ static void FSioExecute(
 
         while ((ch = getopt(args, words, switches)) != -1) {
           if ((ch == '?') || ((ptr = strchr(switches, ch)) == NULL)) {
-#if !defined(__linux__)
+#if !defined(__linux__) && !defined(_WIN32)
             optreset = 1;
 #endif
             optind = 1;
@@ -1913,7 +1925,7 @@ static void FSioExecute(
         /*
          * Reset getopt() for subsequent uses.
          */
-#if !defined(__linux__)
+#if !defined(__linux__) && !defined(_WIN32)
         optreset = 1;
 #endif
         optind = 1;

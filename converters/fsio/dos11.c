@@ -32,13 +32,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 #include <sys/stat.h>
 
 #include "fsio.h"
+
+#ifdef _WIN32
+#define le16toh(x) (x)
+#define htole16(x) (x)
+#define localtime_r(now_, tm_) localtime_s(tm_, now_)
+#endif
 
 extern uint16_t bits[], lowbits[], highbits[];
 extern uint8_t zeroes[];
@@ -1503,11 +1508,20 @@ static int dos11Mount(
   uint16_t mfdblk, mapblk, interleave;
   unsigned int i, freeblocks = 0;
 
+#ifdef _WIN32
+  if (fstat(fileno(mount->container), &stat) == 0) {
+    size_t blocks = stat.st_size / 512; // Calculate the number of 512-byte blocks
+    if (blocks < DISKSIZE_RK05)
+      mount->blocksz = BLOCKSIZE_RF11 * 2;
+    if (blocks > DISKSIZE_RK05)
+      mount->blocksz = BLOCKSIZE_RP03 * 2;
+#else
   if (fstat(fileno(mount->container), &stat) == 0) {
     if (stat.st_blocks < DISKSIZE_RK05)
       mount->blocksz = BLOCKSIZE_RF11 * 2;
     if (stat.st_blocks > DISKSIZE_RK05)
       mount->blocksz = BLOCKSIZE_RP03 * 2;
+#endif
 
     data->blocks = stat.st_size / mount->blocksz;
 

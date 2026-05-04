@@ -32,14 +32,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 #include <sys/stat.h>
-#include <regex.h>
 
 #include "fsio.h"
+
+#ifdef _WIN32
+#define le16toh(x) (x)
+#define htole16(x) (x)
+#define localtime_r(now_, tm_) localtime_s(tm_, now_)
+#endif
 
 static int rk05BlockPresent(struct mountedFS *, uint8_t, unsigned int);
 static int rk05ReadBlock(struct mountedFS *, uint8_t, unsigned int, void *);
