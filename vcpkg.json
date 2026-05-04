@@ -13,6 +13,10 @@
       "name": "ncurses",
       "platform": "linux | osx"
     },
+    {
+      "name": "pcre2",
+      "platform": "windows"
+    },
     "pkgconf",
     "readline"
   ]

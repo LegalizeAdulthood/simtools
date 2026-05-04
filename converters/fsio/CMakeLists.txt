@@ -1,4 +1,7 @@
 include(readline)
+include(target_getopt)
+
+add_library(regex INTERFACE)
 
 add_executable(fsio
     fsio.h fsio.c
@@ -11,7 +14,12 @@ add_executable(fsio
     os8.h os8.c
     unixv7.h unixv7.c
 )
-target_link_libraries(fsio PRIVATE readline)
+if(WIN32)
+    find_package(pcre2 CONFIG REQUIRED)
+    target_link_libraries(regex INTERFACE PCRE2::POSIX)
+endif()
+target_link_libraries(fsio PRIVATE readline regex)
+target_getopt(fsio)
 target_folder(fsio "Converters")
 
 install(TARGETS fsio RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
