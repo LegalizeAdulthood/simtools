@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 /****************************************************/
 #define MXSYM 1500
 #define MXLABEL 5
@@ -35,11 +36,10 @@ int      rep_count=0;    /* >0 if REP statement in process */
 char     listfilename[256];
 FILE    *listfile;
 /****************************************************/
-start_listing (nam)
+void start_listing(char *nam)
 /*
 **  Initialize listing output file
 */
-char *nam;
 {
     char *ppos;
 
@@ -49,10 +49,11 @@ char *nam;
     listfile = fopen (listfilename, "w");
 }
 /****************************************************/
-finish_listing () {
+void finish_listing(void)
 /*
 **  Finish off listing output file
 */
+{
     fclose (listfile);
     printf ("Listing is in %s\n", listfilename);
 }
@@ -67,11 +68,10 @@ long     outcount;
 long     outbufsize=27;
 long     outbuf[27];
 /****************************************************/
-start_output (nam)
+void start_output(char *nam)
 /*
 **  Initialize binary output file
 */
-char *nam;
 {
     char *ppos;
 
@@ -83,10 +83,11 @@ char *nam;
     outcount = 0;
 }
 /****************************************************/
-send_output () {
+void send_output(void)
 /*
 **  Write block to binary output file
 */
+{
     long ii,sum;
 
     fputc (outcount, outfile);
@@ -104,12 +105,10 @@ send_output () {
     outcount = 0;
 }
 /****************************************************/
-output_word (addr,word) 
+void output_word(long addr, long word)
 /*
 **  Write word to binary output file
 */
-long addr;
-long word;
 {
     if (outcount && (outaddr + outcount) != addr) {
         send_output();
@@ -121,11 +120,12 @@ long word;
     }
 }
 /****************************************************/
-finish_output () {
+void finish_output(void)
 /*
 **  Finish current output block, write trailing leader,
 **  and close output file
 */
+{
     int ii;
     if (outcount) send_output();
     for (ii=0; ii<20; ii++) fputc (0, outfile);
@@ -133,8 +133,7 @@ finish_output () {
     printf ("Output is in %s\n", outfilename);
 }
 /****************************************************/
-emit (code)
-long code;
+void emit(long code)
 {
     fprintf (listfile, "  %05lo %06lo  ", addr, code);
     if (!print_flag) {
@@ -147,8 +146,7 @@ long code;
     addr++;
 }
 /****************************************************/
-err (text)
-char *text;
+void err(char *text)
 {
     if (!print_flag) {
         fprintf (listfile, "  %12s  %s\n", " ", line);
@@ -158,8 +156,7 @@ char *text;
     err_count++;
 }
 /****************************************************/
-int is_valid_label_char (ch)
-char ch;
+int is_valid_label_char(char ch)
 {
     if (isalpha(ch)) return (1);
     if (isdigit(ch)) return (1);
@@ -179,9 +176,7 @@ char ch;
     return (0);
 }
 /****************************************************/
-void insert_label (label, value)
-char *label;
-long  value;
+void insert_label(char *label, long value)
 /*
 **  Insert label into symbol table
 */
@@ -206,9 +201,7 @@ long  value;
     nbsyms++;
 }
 /****************************************************/
-void find_label (label, value)
-char *label;
-long *value;
+void find_label(char *label, long *value)
 {
     long i;
     for (i=0; i<nbsyms; i++) {
@@ -221,7 +214,7 @@ long *value;
     *value=0;
 }
 /****************************************************/
-show_labels () 
+void show_labels(void)
 {
     long i;
     for (i=0; i<nbsyms; i++) {
@@ -229,9 +222,7 @@ show_labels ()
     }
 }
 /****************************************************/
-int double_to_hp (num, a, b) 
-    double num;
-    long *a,*b;
+int double_to_hp(double num, long *a, long *b)
 /*
 **  Convert floating point number to HP 21xx format
 **  Accepts:
@@ -279,9 +270,7 @@ int double_to_hp (num, a, b)
     return (0);
 }
 /****************************************************/
-parse_digits (base, out) 
-int base;
-long *out;
+void parse_digits(int base, long *out)
 {
     long dig, val;
     val = 0;
@@ -293,8 +282,7 @@ long *out;
     *out = val;
 }
 /****************************************************/
-parse_const (out)
-long *out;
+void parse_const(long *out)
 {
     long save, val;
     save = lp;
@@ -308,8 +296,7 @@ long *out;
     *out = val;
 }
 /****************************************************/
-parse_sym (out)
-long *out;
+void parse_sym(long *out)
 {
     char  sym[MXLABEL+1];
     int   count,done;
@@ -335,8 +322,7 @@ long *out;
     }
 }
 /****************************************************/
-parse_term (out)
-long *out;
+void parse_term(long *out)
 {
     char ch;
     ch = line[lp];
@@ -349,8 +335,7 @@ long *out;
     }
 }
 /****************************************************/
-parse_neg (out)
-long *out;
+void parse_neg(long *out)
 {
     long temp;
     if (line[lp]=='-') {
@@ -365,8 +350,7 @@ long *out;
     }
 }
 /****************************************************/
-parse_sum (out)
-long *out;
+void parse_sum(long *out)
 {
     long v1,v2,op;
     parse_neg (&v1);
@@ -379,16 +363,14 @@ long *out;
     *out = v1 & 0xFFFF;
 }  
 /****************************************************/
-parse_arg (out)
-long *out;
+void parse_arg(long *out)
 {
     while (isspace (line[lp])) lp++;
 /*    while (line[lp]==' ') lp++; */
     parse_sum (out);
 }
 /****************************************************/
-parse_oct (out)
-long *out;
+void parse_oct(long *out)
 {
     long sign,val;
 
@@ -401,11 +383,9 @@ long *out;
     *out =val;
 }
 /****************************************************/
-parse_dec (out, nbwords)
-long *out, *nbwords;
+void parse_dec(long *out, long *nbwords)
 {
     long save,sign,val,a,b;
-    extern double atof();
     double num;
 
     while (isspace (line[lp])) lp++;
@@ -428,9 +408,7 @@ long *out, *nbwords;
     }
 }
 /****************************************************/
-mem_group (opcode, code) 
-int opcode;
-long *code;
+void mem_group(int opcode, long *code)
 {
     long arg, out;
     parse_arg (&arg);
@@ -449,9 +427,7 @@ long *code;
     code[0] = out;
 }
 /****************************************************/
-io_group (opcode, code)
-int opcode;
-long *code;
+void io_group(int opcode, long *code)
 {
     long arg, out;
     parse_arg (&arg);
@@ -467,9 +443,7 @@ long *code;
     code[0] = out;
 }
 /****************************************************/
-overflow_group (opcode, code)
-int opcode;
-long *code;
+void overflow_group(int opcode, long *code)
 {
     code[0] = opcode;
     if (isspace (line[lp]) && toupper(line[lp+1])=='C') {
@@ -479,8 +453,7 @@ long *code;
     }
 }
 /****************************************************/
-parse_label (label)
-char *label;
+void parse_label(char *label)
 {
     int i=0;
     while (is_valid_label_char(line[lp])) {
@@ -490,8 +463,7 @@ char *label;
     label[i]=0;
 }
 /****************************************************/
-int try (instr) 
-char *instr;
+int try(char *instr)
 {
     int ii,out;
     for (ii=0; instr[ii]; ii++) {
@@ -508,7 +480,7 @@ char *instr;
     return (out);
 }
 /****************************************************/
-int end_of_line()
+int end_of_line(void)
 {
     int ll,out;
     ll=lp;
@@ -523,8 +495,7 @@ int end_of_line()
     return (out);
 }
 /****************************************************/
-int try_mem_group (code)
-long *code;
+int try_mem_group(long *code)
 {
     int ok=1;
     if (try("NOP")) code[0]=0;
@@ -546,8 +517,7 @@ long *code;
     return (ok);
 }
 /****************************************************/
-int try_srg_a (code)
-long *code;
+int try_srg_a(long *code)
 {
     int ok=0;
     long out=0;
@@ -580,8 +550,7 @@ long *code;
     return (ok);
 }
 /****************************************************/
-int try_srg_b (code)
-long *code;
+int try_srg_b(long *code)
 {
     int ok=0;
     long out=0;
@@ -614,8 +583,7 @@ long *code;
     return (ok);
 }
 /****************************************************/
-int try_asg_a (code)
-long *code;
+int try_asg_a(long *code)
 {
     int ok=0;
     long out=0;
@@ -642,8 +610,7 @@ long *code;
     return (ok);
 }
 /****************************************************/
-int try_asg_b (code)
-long *code;
+int try_asg_b(long *code)
 {
     int ok=0;
     long out=0;
@@ -670,8 +637,7 @@ long *code;
     return (ok);
 }
 /****************************************************/
-int try_io_group (code)
-long *code;
+int try_io_group(long *code)
 {
     int ok=1;
     if (try("NOP")) code[0]=0;
@@ -693,8 +659,7 @@ long *code;
 }
 
 /****************************************************/
-int try_overflow (code)
-long *code;
+int try_overflow(long *code)
 {
     int ok=1;
     if      (try("STO")) code[0] = 0102101;
@@ -705,8 +670,7 @@ long *code;
     return (ok);
 }
 /****************************************************/
-asm_pass (f)
-FILE *f;
+void asm_pass(FILE *f)
 {
     int  done,count;
     char label[MXLABEL+1];
@@ -858,9 +822,7 @@ FILE *f;
     }
 }       
 /****************************************************/
-main (argc,argv)
-int argc;
-char *argv[];
+int main(int argc, char *argv[])
 {
     FILE *f1;
     int ii,jj;
